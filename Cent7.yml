@@ -1,0 +1,54 @@
+---
+- name: Enable EPEL Repo
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Install Cobbler Packages
+  yum:
+    name:
+      - cobbler
+      - cobbler-web
+      - dnsmasq
+      - syslinux
+      - pykickstart
+      - xinetd
+    state: present
+
+- name: Enable Services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - cobblerd
+    - httpd
+    - xinetd
+    - dnsmasq
+
+- name: Set SELinux to permissive mode
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Set Firewall Port Rules
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: true
+  loop:
+    - "80/tcp"
+    - "443/tcp"
+    - "69/tcp"
+    - "69/udp"
+    - "4011/udp"
+
+- name: Set Firewall Service Rules
+  firewalld:
+    service: dhcp
+    permanent: yes
+    state: enabled
+    immediate: true
+
+

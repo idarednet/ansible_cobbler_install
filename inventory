@@ -1,0 +1,21 @@
+[cblr_server]
+localhost ansible_connection=local
+
+[cblr_server:vars]
+# VARS COBBLER SETTINGS FILE
+server="192.168.1.175"
+next_server="192.168.1.175"
+root_passwd="$1$j9/aR8Et$uovwBsGM.cLGcwR.Nf7Qq0"
+manage_dhcp=1
+manage_dns=1
+manage_tftp=1
+pxe_just_once=1
+# VARS DHCP SERVICE
+option_routers="192.168.1.175"
+options_dns_servers="192.168.1.175"
+dhcp_network="192.168.1.0"
+dhcp_netmask="255.255.255.0"
+dhcp_range="192.168.1.10 192.168.1.20"
+# VARS DNSMASQ SERVICE
+dhcp_range_dnsmasq="192.168.1.10,192.168.1.20"
+
